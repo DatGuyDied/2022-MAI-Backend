@@ -37,6 +37,7 @@ func (c *LRU) Set(key, value string) {
 	e, ok := c.cache[key]
 	if ok {
 		e.Value = keyValue{key, value}
+		c.list.MoveToFront(e)
 		return
 	}
 
@@ -46,7 +47,6 @@ func (c *LRU) Set(key, value string) {
 	if c.size > c.cap {
 		last := c.list.Back().Value.(keyValue)
 		c.Remove(last.key)
-		c.size--
 	}
 }
 
